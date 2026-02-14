@@ -1,0 +1,871 @@
+/* ============================================
+   GlowIQ - Premium Skincare & Haircare Login
+   Modern, Creamy, Dermatology-Focused Design
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600&display=swap');
+
+/* ============================================
+   ROOT VARIABLES - Creamy & Warm Palette
+   ============================================ */
+
+:root {
+  /* Color Palette - Soft, Creamy, Warm */
+  --color-bg-primary: #FAF7F2;
+  --color-bg-secondary: #F5F0EB;
+  --color-bg-tertiary: #F0E8E1;
+  --color-cream: #FBF9F5;
+  
+  /* Accents - Warm Beige, Peach, Blush */
+  --color-beige: #D4C5B9;
+  --color-caramel: #C8A882;
+  --color-nude-rose: #D4B5A0;
+  --color-peach: #E8C4B8;
+  --color-blush: #DDB5A8;
+  --color-gold: #C4A878;
+  
+  /* Text Colors - Warm Charcoal */
+  --color-text-primary: #3D3430;
+  --color-text-secondary: #6B5F57;
+  --color-text-light: #9B8A7E;
+  --color-text-muted: #B5A499;
+  
+  /* UI Elements */
+  --color-border: #E8DCC8;
+  --color-input-bg: #FFFCF9;
+  --color-error: #C9847E;
+  --color-success: #A8B88A;
+  
+  /* Effects */
+  --color-shadow: rgba(45, 40, 35, 0.08);
+  --color-shadow-dark: rgba(45, 40, 35, 0.12);
+  
+  /* Sizing & Spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  /* Typography */
+  --font-serif: 'Playfair Display', 'Libre Baskerville', serif;
+  --font-sans: 'Inter', 'Poppins', sans-serif;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 6px var(--color-shadow);
+  --shadow-md: 0 6px 16px var(--color-shadow);
+  --shadow-lg: 0 12px 32px var(--color-shadow-dark);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* ============================================
+   BACKGROUND & LAYOUT
+   ============================================ */
+
+.login-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 40%,
+    var(--color-bg-tertiary) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+/* ============================================
+   DECORATIVE ELEMENTS - Skincare Inspired
+   ============================================ */
+
+.accent-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: drift 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.accent-blob-1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, var(--color-caramel), var(--color-peach));
+  top: -150px;
+  left: -150px;
+  animation-delay: 0s;
+}
+
+.accent-blob-2 {
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(135deg, var(--color-nude-rose), var(--color-blush));
+  bottom: -100px;
+  right: -100px;
+  animation-delay: 3s;
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(30px, -30px);
+  }
+  50% {
+    transform: translate(0, -40px);
+  }
+  75% {
+    transform: translate(-30px, -20px);
+  }
+}
+
+/* Hair-flow curves */
+.accent-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, var(--color-caramel), transparent);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.accent-line-1 {
+  width: 800px;
+  height: 2px;
+  top: 20%;
+  left: -200px;
+  transform: rotate(-15deg);
+  animation: flow 8s ease-in-out infinite;
+}
+
+.accent-line-2 {
+  width: 600px;
+  height: 2px;
+  bottom: 30%;
+  right: -150px;
+  transform: rotate(20deg);
+  animation: flow 10s ease-in-out infinite reverse;
+  animation-delay: 1s;
+}
+
+@keyframes flow {
+  0%, 100% {
+    transform: rotate(-15deg) translateX(0);
+  }
+  50% {
+    transform: rotate(-15deg) translateX(20px);
+  }
+}
+
+/* ============================================
+   LOGIN CARD
+   ============================================ */
+
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, 
+    rgba(251, 249, 245, 0.98) 0%,
+    rgba(255, 252, 249, 0.96) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(232, 220, 200, 0.5);
+  border-radius: var(--radius-xl);
+  padding: 56px 44px;
+  box-shadow: 
+    0 20px 60px var(--color-shadow-dark),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 2px rgba(200, 168, 130, 0.06);
+  animation: slideUp 600ms var(--transition-base);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   LOGO & BRANDING
+   ============================================ */
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeInDown 600ms var(--transition-base) 100ms both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-mark {
+  display: inline-block;
+  margin-bottom: 20px;
+  animation: glow-subtle 3s ease-in-out infinite;
+}
+
+.logo-mark svg {
+  display: block;
+  filter: drop-shadow(0 8px 16px var(--color-shadow));
+}
+
+@keyframes glow-subtle {
+  0%, 100% {
+    filter: drop-shadow(0 8px 16px var(--color-shadow));
+  }
+  50% {
+    filter: drop-shadow(0 12px 24px var(--color-shadow-dark));
+  }
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  margin: 0 0 8px 0;
+  color: var(--color-text-primary);
+  background: linear-gradient(135deg, var(--color-caramel), var(--color-nude-rose));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-tagline {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  animation: fadeInUp 600ms var(--transition-base) 200ms both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Input Wrapper */
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background: linear-gradient(135deg,
+    var(--color-input-bg) 0%,
+    var(--color-cream) 100%
+  );
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-light);
+  font-weight: 300;
+}
+
+.form-input:focus {
+  border-color: var(--color-caramel);
+  background: var(--color-cream);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.03),
+    0 0 0 4px rgba(200, 168, 130, 0.1),
+    0 4px 12px var(--color-shadow);
+  transform: translateY(-1px);
+}
+
+.form-input-icon {
+  position: absolute;
+  left: 14px;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-light);
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.form-input:focus + .form-input-icon {
+  color: var(--color-caramel);
+}
+
+/* ============================================
+   FORGOT PASSWORD BUTTON
+   ============================================ */
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  padding: 0;
+  font-family: var(--font-sans);
+}
+
+.forgot-password-btn:hover {
+  color: var(--color-caramel);
+}
+
+.forgot-password-btn:active {
+  color: var(--color-nude-rose);
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+
+.error-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg,
+    rgba(201, 132, 126, 0.08) 0%,
+    rgba(201, 132, 126, 0.04) 100%
+  );
+  border: 1px solid rgba(201, 132, 126, 0.25);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideDown 300ms var(--transition-fast);
+}
+
+.error-box svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   PRIMARY BUTTON
+   ============================================ */
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  letter-spacing: 0.3px;
+  color: white;
+  background: linear-gradient(135deg, var(--color-caramel), var(--color-nude-rose));
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 24px rgba(200, 168, 130, 0.25),
+    0 2px 8px var(--color-shadow);
+  min-height: 44px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: left 600ms ease-out;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 32px rgba(200, 168, 130, 0.3),
+    0 4px 12px var(--color-shadow-dark);
+}
+
+.btn-primary:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 
+    0 6px 16px rgba(200, 168, 130, 0.2),
+    0 2px 6px var(--color-shadow);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primary.loading {
+  pointer-events: none;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.divider-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--color-border),
+    transparent
+  );
+}
+
+.divider-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   SOCIAL LOGIN BUTTONS
+   ============================================ */
+
+.social-login-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--color-text-secondary);
+  background: linear-gradient(135deg,
+    var(--color-cream) 0%,
+    var(--color-input-bg) 100%
+  );
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.btn-social::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--color-shadow);
+  transform: translate(-50%, -50%);
+  transition: width 400ms, height 400ms;
+}
+
+.btn-social:hover {
+  border-color: var(--color-caramel);
+  background: linear-gradient(135deg,
+    rgba(200, 168, 130, 0.06),
+    rgba(200, 168, 130, 0.03)
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.btn-social:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-social:active {
+  transform: translateY(0);
+}
+
+.btn-social svg {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-social span {
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================
+   FOOTER TEXT & LINKS
+   ============================================ */
+
+.footer-text {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  animation: fadeIn 600ms var(--transition-base) 400ms both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.link-signup {
+  color: var(--color-caramel);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.link-signup::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-caramel);
+  transition: width var(--transition-base);
+}
+
+.link-signup:hover {
+  color: var(--color-nude-rose);
+}
+
+.link-signup:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 40px 32px;
+    border-radius: 16px;
+  }
+
+  .brand-name {
+    font-size: 36px;
+  }
+
+  .login-form {
+    gap: 18px;
+  }
+
+  .form-input {
+    padding: 11px 14px 11px 40px;
+    font-size: 14px;
+  }
+
+  .accent-blob {
+    filter: blur(60px);
+  }
+
+  .accent-blob-1 {
+    width: 250px;
+    height: 250px;
+    top: -100px;
+    left: -100px;
+  }
+
+  .accent-blob-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -80px;
+    right: -80px;
+  }
+
+  .accent-line-1,
+  .accent-line-2 {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-card {
+    padding: 32px 20px;
+  }
+
+  .logo-section {
+    margin-bottom: 32px;
+  }
+
+  .logo-mark svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-name {
+    font-size: 32px;
+  }
+
+  .brand-tagline {
+    font-size: 11px;
+  }
+
+  .form-input {
+    font-size: 13px;
+  }
+
+  .social-login-group {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-social {
+    flex-direction: row;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY & PREFERENCES
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #2B2520;
+    --color-bg-secondary: #362F2A;
+    --color-bg-tertiary: #3D3530;
+    --color-cream: #1F1B17;
+    
+    --color-text-primary: #F0E8E0;
+    --color-text-secondary: #D4C5B9;
+    --color-text-light: #A89B8F;
+    --color-text-muted: #8B7E73;
+    
+    --color-border: #544E47;
+    --color-input-bg: #1A1612;
+    
+    --color-shadow: rgba(0, 0, 0, 0.4);
+    --color-shadow-dark: rgba(0, 0, 0, 0.6);
+  }
+
+  .login-card {
+    background: linear-gradient(135deg, 
+      rgba(31, 27, 23, 0.98) 0%,
+      rgba(26, 22, 18, 0.96) 100%
+    );
+    border-color: rgba(84, 78, 71, 0.6);
+  }
+
+  .form-input {
+    background: linear-gradient(135deg,
+      #0F0B08 0%,
+      #151109 100%
+    );
+    border-color: rgba(84, 78, 71, 0.6);
+  }
+
+  .form-input:focus {
+    border-color: var(--color-caramel);
+    background: #1A1612;
+  }
+
+  .btn-primary {
+    box-shadow: 
+      0 8px 24px rgba(200, 168, 130, 0.2),
+      0 2px 8px var(--color-shadow);
+  }
+
+  .btn-social {
+    background: linear-gradient(135deg,
+      #1F1B17 0%,
+      #2B2520 100%
+    );
+    border-color: rgba(84, 78, 71, 0.6);
+  }
+
+  .btn-social:hover {
+    background: linear-gradient(135deg,
+      rgba(200, 168, 130, 0.1),
+      rgba(200, 168, 130, 0.06)
+    );
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .login-wrapper {
+    padding: 10px;
+  }
+
+  .login-card {
+    padding: 40px 36px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .brand-name {
+    font-size: 32px;
+  }
+
+  .login-form {
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .login-wrapper {
+    background: white;
+  }
+
+  .accent-blob,
+  .accent-line {
+    display: none;
+  }
+
+  .login-card {
+    box-shadow: 1px 1px 3px #ccc;
+  }
+}
