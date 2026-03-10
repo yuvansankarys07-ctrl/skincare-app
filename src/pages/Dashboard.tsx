@@ -66,10 +66,6 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const handleCategoryClick = (category: Category) => {
-    setActiveCategory(category);
-  };
-
   const toggleRoutineStep = (id: number) => {
     const currentSteps = routineSteps[activeCategory];
     if (currentSteps) {
@@ -198,7 +194,7 @@ const Dashboard = () => {
               {/* Fashion Care Card */}
               <div 
                 className="category-card fashion-card"
-                onClick={() => handleCategoryClick('fashion')}
+                onClick={() => window.location.assign('/fashion.html')}
               >
                 <div className="card-icon">
                   <svg width="48" height="48" viewBox="0 0 64 64" fill="none">

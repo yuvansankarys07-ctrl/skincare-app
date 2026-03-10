@@ -1,6 +1,5 @@
 import './App.css'
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
@@ -13,18 +12,8 @@ import SkinOnboarding from './pages/SkinOnboarding';
 import HairOnboarding from './pages/HairOnboarding';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('token'));
-
-  useEffect(() => {
-    // Listen for storage changes (e.g., when token is set in another tab or same tab)
-    const handleStorageChange = () => {
-      const token = localStorage.getItem('token');
-      setIsLoggedIn(!!token);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  // Read token directly per render so auth guards reflect same-tab login/logout immediately.
+  const isLoggedIn = !!localStorage.getItem('token');
 
   return (
     <Routes>
