@@ -11,7 +11,6 @@ const Signup = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    skinType: '',
     agreeTerms: false,
   });
 
@@ -19,7 +18,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
       setFormData({
@@ -72,11 +71,6 @@ const Signup = () => {
     }
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
-      setLoading(false);
-      return;
-    }
-    if (!formData.skinType) {
-      setError('Please select your skin type');
       setLoading(false);
       return;
     }
@@ -218,30 +212,6 @@ const Signup = () => {
               <svg className="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M2 4h16v12H2V4z" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                 <path d="M2 4l8 6 8-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Skin Type Select */}
-          <div className="form-group">
-            <label htmlFor="skinType" className="form-label">Skin Type</label>
-            <div className="input-wrapper">
-              <select
-                id="skinType"
-                name="skinType"
-                value={formData.skinType}
-                onChange={handleChange}
-                className="form-input form-select"
-              >
-                <option value="">Select your skin type</option>
-                <option value="oily">Oily</option>
-                <option value="dry">Dry</option>
-                <option value="combination">Combination</option>
-                <option value="sensitive">Sensitive</option>
-                <option value="normal">Normal</option>
-              </select>
-              <svg className="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </div>
           </div>
