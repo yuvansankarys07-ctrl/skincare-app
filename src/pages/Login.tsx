@@ -3,13 +3,71 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../styles/login.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const APPLE_CLIENT_ID = import.meta.env.VITE_APPLE_CLIENT_ID;
+const APPLE_REDIRECT_URI = import.meta.env.VITE_APPLE_REDIRECT_URI;
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize: (config: {
+            client_id: string;
+            callback: (response: { credential?: string }) => void;
+          }) => void;
+          prompt: () => void;
+        };
+      };
+    };
+    AppleID?: {
+      auth: {
+        init: (config: {
+          clientId: string;
+          scope: string;
+          redirectURI: string;
+          usePopup: boolean;
+          state?: string;
+          nonce?: string;
+        }) => void;
+        signIn: () => Promise<{
+          authorization?: {
+            id_token?: string;
+          };
+          user?: {
+            name?: {
+              firstName?: string;
+              lastName?: string;
+            };
+            email?: string;
+          };
+        }>;
+      };
+    };
+  }
+}
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const navigate = useNavigate();
+
+  const completeLogin = (data: { token?: string; user?: unknown; message?: string }) => {
+    if (!data.token) {
+      throw new Error(data.message || 'No token received from server');
+    }
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('isLoggedIn', 'true');
+    if (data.user) {
+      localStorage.setItem('userData', JSON.stringify(data.user));
+    }
+    navigate('/dashboard', { replace: true });
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,24 +113,8 @@ const Login = () => {
       })
       .then(data => {
         console.log('API Response:', JSON.stringify(data));
-        if (data.token) {
-          console.log('Token received, saving to localStorage');
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('isLoggedIn', 'true');
-          if (data.user) {
-            localStorage.setItem('userData', JSON.stringify(data.user));
-          }
-          console.log('Token saved, navigating to dashboard');
-          setLoading(false);
-          // Use setTimeout to ensure state is updated before navigation
-          setTimeout(() => {
-            navigate('/dashboard', { replace: true });
-          }, 100);
-        } else {
-          console.error('No token in response:', data);
-          setError(data.message || 'No token received from server');
-          setLoading(false);
-        }
+        completeLogin(data);
+        setLoading(false);
       })
       .catch(err => {
         console.error('Login error:', err);
@@ -81,22 +123,167 @@ const Login = () => {
       });
   };
 
-  const handleSocialLogin = (provider: string) => {
-    // Simulate social login
-    const userData = {
-      email: `user@${provider}.com`,
-      provider,
-      loginTime: new Date().toISOString(),
-    };
-    
-    localStorage.setItem('userData', JSON.stringify(userData));
-    localStorage.setItem('isLoggedIn', 'true');
-    navigate('/dashboard');
+  const handleGoogleCredential = (credential: string) => {
+    fetch(`${API_BASE_URL}/api/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ credential }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const text = await response.text();
+          try {
+            const data = JSON.parse(text);
+            throw new Error(data.message || 'Google sign-in failed');
+          } catch {
+            throw new Error(text || 'Google sign-in failed');
+          }
+        }
+        return response.json();
+      })
+      .then((data) => {
+        completeLogin(data);
+      })
+      .catch((err) => {
+        setError(err.message || 'Google sign-in failed');
+      })
+      .finally(() => {
+        setGoogleLoading(false);
+      });
+  };
+
+  const handleGoogleLogin = () => {
+    setError('');
+    if (!GOOGLE_CLIENT_ID) {
+      setError('Google Sign-In is not configured. Set VITE_GOOGLE_CLIENT_ID.');
+      return;
+    }
+
+    if (!window.google?.accounts?.id) {
+      setGoogleLoading(true);
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        window.google?.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (response) => {
+            if (!response.credential) {
+              setGoogleLoading(false);
+              setError('Google Sign-In was cancelled or failed.');
+              return;
+            }
+            handleGoogleCredential(response.credential);
+          },
+        });
+        window.google?.accounts.id.prompt();
+      };
+      script.onerror = () => {
+        setGoogleLoading(false);
+        setError('Unable to load Google Sign-In. Please try again.');
+      };
+      document.body.appendChild(script);
+      return;
+    }
+
+    setGoogleLoading(true);
+    window.google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: (response) => {
+        if (!response.credential) {
+          setGoogleLoading(false);
+          setError('Google Sign-In was cancelled or failed.');
+          return;
+        }
+        handleGoogleCredential(response.credential);
+      },
+    });
+    window.google.accounts.id.prompt();
   };
 
   const handleForgotPassword = () => {
     // Placeholder for forgot password functionality
     alert('Password reset link would be sent to your email');
+  };
+
+  const handleAppleLogin = () => {
+    setError('');
+    if (!APPLE_CLIENT_ID || !APPLE_REDIRECT_URI) {
+      setError('Apple Sign-In is not configured. Set VITE_APPLE_CLIENT_ID and VITE_APPLE_REDIRECT_URI.');
+      return;
+    }
+
+    const runAppleSignIn = () => {
+      setAppleLoading(true);
+      window.AppleID?.auth.init({
+        clientId: APPLE_CLIENT_ID,
+        scope: 'name email',
+        redirectURI: APPLE_REDIRECT_URI,
+        usePopup: true,
+      });
+
+      window.AppleID?.auth.signIn()
+        .then((response) => {
+          const idToken = response.authorization?.id_token;
+          if (!idToken) {
+            throw new Error('Apple Sign-In did not return a token');
+          }
+
+          const firstName = response.user?.name?.firstName || '';
+          const lastName = response.user?.name?.lastName || '';
+          const fullName = `${firstName} ${lastName}`.trim();
+          const appleEmail = response.user?.email;
+
+          return fetch(`${API_BASE_URL}/api/auth/apple`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              idToken,
+              name: fullName || undefined,
+              email: appleEmail || undefined,
+            }),
+          });
+        })
+        .then(async (response) => {
+          if (!response.ok) {
+            const text = await response.text();
+            try {
+              const data = JSON.parse(text);
+              throw new Error(data.message || 'Apple sign-in failed');
+            } catch {
+              throw new Error(text || 'Apple sign-in failed');
+            }
+          }
+          return response.json();
+        })
+        .then((data) => {
+          completeLogin(data);
+        })
+        .catch((err) => {
+          setError(err.message || 'Apple sign-in failed');
+        })
+        .finally(() => {
+          setAppleLoading(false);
+        });
+    };
+
+    if (!window.AppleID?.auth) {
+      const script = document.createElement('script');
+      script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = runAppleSignIn;
+      script.onerror = () => setError('Unable to load Apple Sign-In. Please try again.');
+      document.body.appendChild(script);
+      return;
+    }
+
+    runAppleSignIn();
   };
 
   return (
@@ -221,9 +408,10 @@ const Login = () => {
         <div className="social-login-group">
           <button
             type="button"
-            onClick={() => handleSocialLogin('google')}
+            onClick={handleGoogleLogin}
             className="btn-social btn-google"
             title="Continue with Google"
+            disabled={googleLoading}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -231,19 +419,20 @@ const Login = () => {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
             </svg>
-            <span>Google</span>
+            <span>{googleLoading ? 'Connecting...' : 'Google'}</span>
           </button>
 
           <button
             type="button"
-            onClick={() => handleSocialLogin('apple')}
+            onClick={handleAppleLogin}
             className="btn-social btn-apple"
             title="Continue with Apple"
+            disabled={appleLoading}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17.05 13.5c-.91 2.18-.39 4.18 1.64 5.77-1.29 1.01-3.3.73-4.51-.67-1.43 1.43-3.2 1.43-4.63 0-1.21 1.4-3.22 1.68-4.51.67 2.03-1.59 2.55-3.59 1.64-5.77-1.45-3.61.3-6.78 3.48-7.73 3.18-.95 6.53.78 7.38 4.01.85-3.23 4.2-4.96 7.38-4.01 3.18.95 4.93 4.12 3.48 7.73z"/>
             </svg>
-            <span>Apple</span>
+            <span>{appleLoading ? 'Connecting...' : 'Apple'}</span>
           </button>
         </div>
 

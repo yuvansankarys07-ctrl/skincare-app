@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GlowIQ Fashion Care Recommendation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/fashion.css" />
+  </head>
+  <body>
+    <div class="page-bg"></div>
+
+    <main class="fashion-page">
+      <section class="hero-card">
+        <a class="back-link" href="/">Back to Dashboard</a>
+        <p class="hero-kicker">GlowIQ</p>
+        <h1>Fashion Personalization Questionnaire</h1>
+        <p class="hero-copy">
+          Answer a few style questions and get your custom color palette, outfits, hairstyles, and smart fashion tips.
+        </p>
+      </section>
+
+      <section class="questionnaire-card">
+        <form id="fashion-form" class="questionnaire-grid">
+          <label>
+            <span>1. What is your skin tone?</span>
+            <select name="skinTone" required>
+              <option value="">Select skin tone</option>
+              <option>Very Fair</option>
+              <option>Fair</option>
+              <option>Medium</option>
+              <option>Wheatish</option>
+              <option>Brown</option>
+              <option>Dark</option>
+            </select>
+          </label>
+
+          <label>
+            <span>2. What is your undertone?</span>
+            <select name="undertone" required>
+              <option value="">Select undertone</option>
+              <option>Warm</option>
+              <option>Cool</option>
+              <option>Neutral</option>
+              <option>Not sure</option>
+            </select>
+          </label>
+
+          <label>
+            <span>3. What is your face shape?</span>
+            <select name="faceShape" required>
+              <option value="">Select face shape</option>
+              <option>Oval</option>
+              <option>Round</option>
+              <option>Square</option>
+              <option>Heart</option>
+              <option>Diamond</option>
+            </select>
+          </label>
+
+          <label>
+            <span>4. Hair type</span>
+            <select name="hairType" required>
+              <option value="">Select hair type</option>
+              <option>Straight</option>
+              <option>Wavy</option>
+              <option>Curly</option>
+              <option>Coily</option>
+            </select>
+          </label>
+
+          <label>
+            <span>5. Hair length</span>
+            <select name="hairLength" required>
+              <option value="">Select hair length</option>
+              <option>Short</option>
+              <option>Medium</option>
+              <option>Long</option>
+            </select>
+          </label>
+
+          <label>
+            <span>6. Body type</span>
+            <select name="bodyType" required>
+              <option value="">Select body type</option>
+              <option>Slim</option>
+              <option>Athletic</option>
+              <option>Average</option>
+              <option>Curvy</option>
+            </select>
+          </label>
+
+          <label>
+            <span>7. Preferred fashion style</span>
+            <select name="fashionStyle" required>
+              <option value="">Select style</option>
+              <option>Casual</option>
+              <option>Formal</option>
+              <option>Streetwear</option>
+              <option>Minimal</option>
+              <option>Ethnic</option>
+              <option>Trendy</option>
+            </select>
+          </label>
+
+          <label>
+            <span>8. Occasion</span>
+            <select name="occasion" required>
+              <option value="">Select occasion</option>
+              <option>Daily wear</option>
+              <option>College</option>
+              <option>Office</option>
+              <option>Party</option>
+              <option>Wedding</option>
+            </select>
+          </label>
+
+          <button type="submit" class="submit-btn">Generate My GlowIQ Style Plan</button>
+        </form>
+      </section>
+
+      <section id="results" class="results-card hidden" aria-live="polite">
+        <div class="result-heading-wrap">
+          <h2>Fashion Recommendation Result</h2>
+          <p id="profile-summary"></p>
+        </div>
+
+        <div class="result-block">
+          <h3>Recommended Color Palette</h3>
+          <div id="palette-grid" class="palette-grid"></div>
+        </div>
+
+        <div class="result-block">
+          <h3>Outfit Suggestions</h3>
+          <div id="outfit-grid" class="cards-grid"></div>
+        </div>
+
+        <div class="result-block">
+          <h3>Hairstyle Suggestions</h3>
+          <div id="hairstyle-grid" class="cards-grid"></div>
+        </div>
+
+        <div class="result-block">
+          <h3>Fashion Tips</h3>
+          <ul id="tips-list" class="tips-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="/fashion.js"></script>
+  </body>
+</html>
