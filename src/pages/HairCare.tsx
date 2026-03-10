@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/haircare.css';
 
-type RoutineTab = 'daily' | 'weekly';
+type RoutineTab = 'daily' | 'weekly' | 'questions';
 
 interface RoutineData {
   hairType: string;
@@ -75,6 +75,69 @@ const LIFESTYLE_TIPS: Record<string, string[]> = {
     'Use humidifier to combat dry air.',
   ],
 };
+
+const HAIR_CARE_QUESTIONS = [
+  {
+    question: 'How often should I wash my hair?',
+    answer: 'It depends on your hair type and lifestyle. Oily hair may need washing every 1-2 days, while dry or curly hair can go 3-4 days or longer. Listen to your hair and scalp—if it feels greasy or itchy, it's time to wash.',
+  },
+  {
+    question: 'What causes hair fall and how can I prevent it?',
+    answer: 'Hair fall can be caused by stress, poor diet, hormonal changes, harsh styling, or genetics. To prevent it: eat protein-rich foods, avoid tight hairstyles, use gentle products, massage your scalp regularly, and manage stress levels.',
+  },
+  {
+    question: 'Should I use conditioner on my scalp?',
+    answer: 'Generally, no. Conditioner is meant for the mid-lengths to ends of your hair. Applying it to the scalp can make roots greasy and weigh hair down. Focus shampoo on the scalp and conditioner on the lengths.',
+  },
+  {
+    question: 'How can I reduce frizz in my hair?',
+    answer: 'Use a moisturizing shampoo and conditioner, apply a leave-in treatment or serum, avoid towel-drying roughly (use a microfiber towel or t-shirt), minimize heat styling, and sleep on a silk or satin pillowcase.',
+  },
+  {
+    question: 'Is it bad to use heat styling tools every day?',
+    answer: 'Yes, daily heat styling can damage hair over time, causing dryness, breakage, and split ends. Always use a heat protectant spray, keep tools on lower settings, and try to limit heat styling to 2-3 times per week.',
+  },
+  {
+    question: 'What's the difference between a hair mask and conditioner?',
+    answer: 'Conditioner is used after every wash for basic moisture and detangling. A hair mask is a deeper treatment used weekly or bi-weekly to repair damage, add intense hydration, and strengthen hair. Masks are left on longer (5-20 minutes).',
+  },
+  {
+    question: 'How do I know my hair type?',
+    answer: 'Hair types range from straight (Type 1) to wavy (Type 2), curly (Type 3), and coily (Type 4). Observe your natural hair texture when air-dried without products. Each type has subcategories (A, B, C) based on curl tightness.',
+  },
+  {
+    question: 'Can I repair split ends without cutting them?',
+    answer: 'Unfortunately, no. Once hair splits, the only permanent solution is to trim them off. However, you can prevent future split ends by using nourishing products, minimizing heat, and getting regular trims every 6-8 weeks.',
+  },
+  {
+    question: 'Why is my scalp so itchy?',
+    answer: 'Itchy scalp can result from dryness, product buildup, dandruff, or sensitivity to ingredients. Try a gentle clarifying shampoo, avoid harsh sulfates, rinse thoroughly, and consider a scalp treatment or anti-dandruff shampoo if needed.',
+  },
+  {
+    question: 'Does trimming hair make it grow faster?',
+    answer: 'No, trimming doesn't affect growth rate (hair grows from the roots). However, regular trims prevent split ends from traveling up the hair shaft, which helps retain length and keeps hair looking healthy.',
+  },
+  {
+    question: 'What ingredients should I avoid in hair products?',
+    answer: 'Common irritants include sulfates (harsh cleansers), parabens (preservatives), silicones (can cause buildup), and alcohol (drying). Look for gentle, sulfate-free formulas, especially if you have sensitive scalp or dry hair.',
+  },
+  {
+    question: 'How can I make my hair grow faster?',
+    answer: 'Hair grows about half an inch per month on average. To support healthy growth: eat a balanced diet rich in protein and vitamins, massage your scalp to boost circulation, stay hydrated, reduce stress, and avoid excessive heat or chemical treatments.',
+  },
+  {
+    question: 'Is it okay to sleep with wet hair?',
+    answer: 'It's not ideal. Wet hair is more fragile and prone to breakage. Sleeping on wet hair can also cause frizz and tangles. If you must, use a microfiber towel or t-shirt to remove excess water and braid or loosely tie your hair.',
+  },
+  {
+    question: 'What's the best way to detangle hair?',
+    answer: 'Start from the ends and work your way up to the roots using a wide-tooth comb or detangling brush. Detangle when hair is damp (not soaking wet) with conditioner or a detangling spray. Be gentle to avoid breakage.',
+  },
+  {
+    question: 'Can diet really affect my hair health?',
+    answer: 'Absolutely! Hair is made of protein (keratin), so a diet rich in protein, iron, omega-3 fatty acids, vitamins A, C, D, E, and biotin supports strong, healthy hair. Deficiencies can lead to thinning, dullness, and slow growth.',
+  },
+];
 
 const HairCare: React.FC = () => {
   const navigate = useNavigate();
@@ -168,7 +231,7 @@ const HairCare: React.FC = () => {
       <section className="routine-section">
         <div className="routine-inner">
           <div className="tab-container">
-            {(['daily', 'weekly'] as RoutineTab[]).map(tab => (
+            {(['daily', 'weekly', 'questions'] as RoutineTab[]).map(tab => (
               <button
                 key={tab}
                 className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
@@ -176,47 +239,67 @@ const HairCare: React.FC = () => {
               >
                 {tab === 'daily' && '💇 Daily Routine'}
                 {tab === 'weekly' && '✨ Weekly Care'}
+                {tab === 'questions' && '❓ Hair Care Q&A'}
               </button>
             ))}
           </div>
 
           {/* Progress Bar */}
-          <div className="progress-section">
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${completionPercent}%` }} />
+          {activeTab !== 'questions' && (
+            <div className="progress-section">
+              <div className="progress-bar">
+                <div className="progress-fill" style={{ width: `${completionPercent}%` }} />
+              </div>
+              <span className="progress-text">{completionPercent}% Complete</span>
             </div>
-            <span className="progress-text">{completionPercent}% Complete</span>
-          </div>
+          )}
 
           {/* Steps List */}
-          <div className="steps-list">
-            {steps.map((step, idx) => {
-              const tabPrefix = activeTab === 'daily' ? 'd' : 'w';
-              const stepId = `${tabPrefix}-${step}`;
-              const isChecked = checklist[stepId] || false;
-              const desc = ROUTINE_STEPS[step] || '';
+          {activeTab !== 'questions' && (
+            <div className="steps-list">
+              {steps.map((step, idx) => {
+                const tabPrefix = activeTab === 'daily' ? 'd' : 'w';
+                const stepId = `${tabPrefix}-${step}`;
+                const isChecked = checklist[stepId] || false;
+                const desc = ROUTINE_STEPS[step] || '';
 
-              return (
-                <div key={stepId} className={`step-item ${isChecked ? 'completed' : ''}`}>
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => toggleCheck(stepId)}
-                    className="step-checkbox"
-                    id={stepId}
-                  />
-                  <label htmlFor={stepId} className="step-label">
-                    <div className="step-nameandnum">
-                      <span className="step-num">{idx + 1}</span>
-                      <span className="step-name">{step}</span>
-                    </div>
-                    {desc && <p className="step-desc">{desc}</p>}
-                  </label>
-                  {isChecked && <span className="check-mark">✓</span>}
+                return (
+                  <div key={stepId} className={`step-item ${isChecked ? 'completed' : ''}`}>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleCheck(stepId)}
+                      className="step-checkbox"
+                      id={stepId}
+                    />
+                    <label htmlFor={stepId} className="step-label">
+                      <div className="step-nameandnum">
+                        <span className="step-num">{idx + 1}</span>
+                        <span className="step-name">{step}</span>
+                      </div>
+                      {desc && <p className="step-desc">{desc}</p>}
+                    </label>
+                    {isChecked && <span className="check-mark">✓</span>}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Questions & Answers */}
+          {activeTab === 'questions' && (
+            <div className="questions-list">
+              {HAIR_CARE_QUESTIONS.map((qa, idx) => (
+                <div key={idx} className="question-card">
+                  <h3 className="question-title">
+                    <span className="question-icon">Q{idx + 1}</span>
+                    {qa.question}
+                  </h3>
+                  <p className="question-answer">{qa.answer}</p>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

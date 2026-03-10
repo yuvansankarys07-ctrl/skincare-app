@@ -42,7 +42,7 @@ function generateHairRoutine(answers: HairAnswers) {
   const concerns = answers.concerns || [];
   const scalpType = (answers.scalpType || '').toLowerCase();
   const hairType = (answers.hairType || '').toLowerCase();
-  const washFreq = (answers.washFreq || '').toLowerCase();
+  // washFreq not used currently
 
   const routine: string[] = [];
   const weekly: string[] = [];

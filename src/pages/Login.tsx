@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/login.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,7 +30,7 @@ const Login = () => {
 
     // Make API call to backend
     console.log('Attempting login with:', { email, password: '***' });
-    fetch('http://localhost:5000/api/auth/login', {
+    fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,26 +38,39 @@ const Login = () => {
       body: JSON.stringify({ email, password }),
     })
       .then(response => {
-        console.log('Response status:', response.status);
+        console.log('Response status:', response.status, 'Content-Type:', response.headers.get('content-type'));
         if (!response.ok) {
-          return response.json().then(data => {
-            throw new Error(data.message || 'Login failed');
+          console.error('Response not ok:', response.status);
+          return response.text().then(text => {
+            console.error('Error response body:', text);
+            try {
+              const data = JSON.parse(text);
+              throw new Error(data.message || `Login failed (${response.status})`);
+            } catch {
+              throw new Error(`Server error: ${response.status} ${text}`);
+            }
           });
         }
         return response.json();
       })
       .then(data => {
-        console.log('Login successful:', data);
+        console.log('API Response:', JSON.stringify(data));
         if (data.token) {
+          console.log('Token received, saving to localStorage');
           localStorage.setItem('token', data.token);
           localStorage.setItem('isLoggedIn', 'true');
           if (data.user) {
             localStorage.setItem('userData', JSON.stringify(data.user));
           }
+          console.log('Token saved, navigating to dashboard');
           setLoading(false);
-          navigate('/dashboard');
+          // Use setTimeout to ensure state is updated before navigation
+          setTimeout(() => {
+            navigate('/dashboard', { replace: true });
+          }, 100);
         } else {
-          setError(data.message || 'Login failed');
+          console.error('No token in response:', data);
+          setError(data.message || 'No token received from server');
           setLoading(false);
         }
       })

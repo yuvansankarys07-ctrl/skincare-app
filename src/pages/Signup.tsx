@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/signup.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -88,7 +90,7 @@ const Signup = () => {
     const name = `${formData.firstName} ${formData.lastName}`;
     console.log('Attempting signup with:', { name, email: formData.email, password: '***' });
     
-    fetch('http://localhost:5000/api/auth/register', {
+    fetch(`${API_BASE_URL}/api/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,26 +98,39 @@ const Signup = () => {
       body: JSON.stringify({ name, email: formData.email, password: formData.password }),
     })
       .then(response => {
-        console.log('Response status:', response.status);
+        console.log('Response status:', response.status, 'Content-Type:', response.headers.get('content-type'));
         if (!response.ok) {
-          return response.json().then(data => {
-            throw new Error(data.message || 'Registration failed');
+          console.error('Response not ok:', response.status);
+          return response.text().then(text => {
+            console.error('Error response body:', text);
+            try {
+              const data = JSON.parse(text);
+              throw new Error(data.message || `Registration failed (${response.status})`);
+            } catch {
+              throw new Error(`Server error: ${response.status} ${text}`);
+            }
           });
         }
         return response.json();
       })
       .then(data => {
-        console.log('Signup successful:', data);
+        console.log('API Response:', JSON.stringify(data));
         if (data.token) {
+          console.log('Token received, saving to localStorage');
           localStorage.setItem('token', data.token);
           localStorage.setItem('isLoggedIn', 'true');
           if (data.user) {
             localStorage.setItem('userData', JSON.stringify(data.user));
           }
+          console.log('Token saved, navigating to dashboard');
           setLoading(false);
-          navigate('/dashboard');
+          // Use setTimeout to ensure state is updated before navigation
+          setTimeout(() => {
+            navigate('/dashboard', { replace: true });
+          }, 100);
         } else {
-          setError(data.message || 'Registration failed');
+          console.error('No token in response:', data);
+          setError(data.message || 'No token received from server');
           setLoading(false);
         }
       })

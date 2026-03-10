@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/skin-onboarding.css';
 
@@ -49,7 +49,7 @@ function generateRoutine(answers: SkinAnswers) {
   // Simple rule-based routine generator that outputs step types (no brands)
   const concerns = answers.concerns || [];
   const skinFeel = (answers.skinFeel || '').toLowerCase();
-  const experience = (answers.experience || '').toLowerCase();
+  // experience not used currently
   const skinType = detectSkinType(answers);
 
   const morning: string[] = [];

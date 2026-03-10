@@ -162,7 +162,7 @@ const Dashboard = () => {
               {/* Skin Care Card */}
               <div 
                 className="category-card skincare-card"
-                onClick={() => navigate('/onboarding/skin')}
+                onClick={() => navigate('/skincare')}
               >
                 <div className="card-icon">
                   <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
@@ -181,7 +181,7 @@ const Dashboard = () => {
               {/* Hair Care Card */}
               <div 
                 className="category-card haircare-card"
-                onClick={() => navigate('/onboarding/hair')}
+                onClick={() => navigate('/haircare')}
               >
                 <div className="card-icon">
                   <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
