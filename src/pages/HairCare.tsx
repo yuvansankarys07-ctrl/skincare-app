@@ -43,7 +43,7 @@ const DOS_AND_DONTS = {
     'Massage scalp gently with fingertips',
     'Use lukewarm water for washing',
     'Be consistent with your routine',
-    'Get regular trims (every 6–8 weeks)',
+    'Get regular trims (every 6-8 weeks)',
     'Sleep on a silk/satin pillowcase',
   ],
   dont: [
@@ -64,9 +64,9 @@ const LIFESTYLE_TIPS: Record<string, string[]> = {
   ],
   'Balanced': [
     'Maintain consistent wash schedule.',
-    'Deep condition 1–2x weekly.',
+    'Deep condition 1-2x weekly.',
     'Stay hydrated with 8+ glasses of water daily.',
-    'Get 7–8 hours of sleep for hair health.',
+    'Get 7-8 hours of sleep for hair health.',
   ],
   'Mostly indoors': [
     'Protect from indoor heat and AC drying.',
@@ -79,7 +79,7 @@ const LIFESTYLE_TIPS: Record<string, string[]> = {
 const HAIR_CARE_QUESTIONS = [
   {
     question: 'How often should I wash my hair?',
-    answer: 'It depends on your hair type and lifestyle. Oily hair may need washing every 1-2 days, while dry or curly hair can go 3-4 days or longer. Listen to your hair and scalp—if it feels greasy or itchy, it's time to wash.',
+    answer: 'It depends on your hair type and lifestyle. Oily hair may need washing every 1-2 days, while dry or curly hair can go 3-4 days or longer. Listen to your hair and scalp - if it feels greasy or itchy, it\'s time to wash.',
   },
   {
     question: 'What causes hair fall and how can I prevent it?',
@@ -98,7 +98,7 @@ const HAIR_CARE_QUESTIONS = [
     answer: 'Yes, daily heat styling can damage hair over time, causing dryness, breakage, and split ends. Always use a heat protectant spray, keep tools on lower settings, and try to limit heat styling to 2-3 times per week.',
   },
   {
-    question: 'What's the difference between a hair mask and conditioner?',
+    question: 'What\'s the difference between a hair mask and conditioner?',
     answer: 'Conditioner is used after every wash for basic moisture and detangling. A hair mask is a deeper treatment used weekly or bi-weekly to repair damage, add intense hydration, and strengthen hair. Masks are left on longer (5-20 minutes).',
   },
   {
@@ -115,7 +115,7 @@ const HAIR_CARE_QUESTIONS = [
   },
   {
     question: 'Does trimming hair make it grow faster?',
-    answer: 'No, trimming doesn't affect growth rate (hair grows from the roots). However, regular trims prevent split ends from traveling up the hair shaft, which helps retain length and keeps hair looking healthy.',
+    answer: 'No, trimming doesn\'t affect growth rate (hair grows from the roots). However, regular trims prevent split ends from traveling up the hair shaft, which helps retain length and keeps hair looking healthy.',
   },
   {
     question: 'What ingredients should I avoid in hair products?',
@@ -127,10 +127,10 @@ const HAIR_CARE_QUESTIONS = [
   },
   {
     question: 'Is it okay to sleep with wet hair?',
-    answer: 'It's not ideal. Wet hair is more fragile and prone to breakage. Sleeping on wet hair can also cause frizz and tangles. If you must, use a microfiber towel or t-shirt to remove excess water and braid or loosely tie your hair.',
+    answer: 'It\'s not ideal. Wet hair is more fragile and prone to breakage. Sleeping on wet hair can also cause frizz and tangles. If you must, use a microfiber towel or t-shirt to remove excess water and braid or loosely tie your hair.',
   },
   {
-    question: 'What's the best way to detangle hair?',
+    question: 'What\'s the best way to detangle hair?',
     answer: 'Start from the ends and work your way up to the roots using a wide-tooth comb or detangling brush. Detangle when hair is damp (not soaking wet) with conditioner or a detangling spray. Be gentle to avoid breakage.',
   },
   {
