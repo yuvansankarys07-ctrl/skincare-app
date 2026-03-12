@@ -17,7 +17,7 @@
 
     <main class="fashion-page">
       <section class="hero-card">
-        <a class="back-link" href="/">Back to Dashboard</a>
+        <a class="back-link" href="/dashboard">Back to Dashboard</a>
         <p class="hero-kicker">GlowIQ</p>
         <h1>Fashion Personalization Questionnaire</h1>
         <p class="hero-copy">
@@ -26,101 +26,66 @@
       </section>
 
       <section class="questionnaire-card">
-        <form id="fashion-form" class="questionnaire-grid">
-          <label>
-            <span>1. What is your skin tone?</span>
-            <select name="skinTone" required>
-              <option value="">Select skin tone</option>
-              <option>Very Fair</option>
-              <option>Fair</option>
-              <option>Medium</option>
-              <option>Wheatish</option>
-              <option>Brown</option>
-              <option>Dark</option>
-            </select>
-          </label>
+        <div class="camera-card">
+          <div class="camera-copy">
+            <p class="camera-kicker">AI Face Scan</p>
+            <h2>Use your camera to estimate face shape</h2>
+            <p class="camera-description">
+              This uses on-device face landmarks in your browser to estimate your face shape and pre-fill the quiz. You can always change the answer manually.
+            </p>
+          </div>
 
-          <label>
-            <span>2. What is your undertone?</span>
-            <select name="undertone" required>
-              <option value="">Select undertone</option>
-              <option>Warm</option>
-              <option>Cool</option>
-              <option>Neutral</option>
-              <option>Not sure</option>
-            </select>
-          </label>
+          <div class="camera-stage">
+            <video id="camera-video" class="camera-video hidden" autoplay playsinline muted></video>
+            <canvas id="camera-canvas" class="camera-canvas hidden"></canvas>
+            <div id="camera-placeholder" class="camera-placeholder">
+              <p>Camera preview appears here after permission is granted.</p>
+            </div>
+          </div>
 
-          <label>
-            <span>3. What is your face shape?</span>
-            <select name="faceShape" required>
-              <option value="">Select face shape</option>
-              <option>Oval</option>
-              <option>Round</option>
-              <option>Square</option>
-              <option>Heart</option>
-              <option>Diamond</option>
-            </select>
-          </label>
+          <div class="camera-actions">
+            <button type="button" id="start-camera-btn" class="camera-btn">Start Camera</button>
+            <button type="button" id="scan-face-btn" class="camera-btn camera-btn-primary">Analyze Face Shape</button>
+            <button type="button" id="stop-camera-btn" class="camera-btn">Stop Camera</button>
+          </div>
 
-          <label>
-            <span>4. Hair type</span>
-            <select name="hairType" required>
-              <option value="">Select hair type</option>
-              <option>Straight</option>
-              <option>Wavy</option>
-              <option>Curly</option>
-              <option>Coily</option>
-            </select>
-          </label>
+          <p id="camera-status" class="camera-status" aria-live="polite">Camera scan is optional.</p>
+          <p id="camera-result" class="camera-result hidden" aria-live="polite"></p>
+        </div>
 
-          <label>
-            <span>5. Hair length</span>
-            <select name="hairLength" required>
-              <option value="">Select hair length</option>
-              <option>Short</option>
-              <option>Medium</option>
-              <option>Long</option>
-            </select>
-          </label>
+        <form id="fashion-form" class="quiz-form">
+          <input type="hidden" name="gender" />
+          <input type="hidden" name="skinTone" />
+          <input type="hidden" name="undertone" />
+          <input type="hidden" name="faceShape" />
+          <input type="hidden" name="hairType" />
+          <input type="hidden" name="hairLength" />
+          <input type="hidden" name="bodyType" />
+          <input type="hidden" name="fashionStyle" />
+          <input type="hidden" name="occasion" />
 
-          <label>
-            <span>6. Body type</span>
-            <select name="bodyType" required>
-              <option value="">Select body type</option>
-              <option>Slim</option>
-              <option>Athletic</option>
-              <option>Average</option>
-              <option>Curvy</option>
-            </select>
-          </label>
+          <div class="quiz-progress" aria-live="polite">
+            <div class="quiz-progress-top">
+              <p id="quiz-step-label" class="quiz-step-label">Question 1 of 9</p>
+              <p class="quiz-step-copy">Pick the option that fits you best.</p>
+            </div>
+            <div class="quiz-progress-track" aria-hidden="true">
+              <div id="quiz-progress-fill" class="quiz-progress-fill"></div>
+            </div>
+          </div>
 
-          <label>
-            <span>7. Preferred fashion style</span>
-            <select name="fashionStyle" required>
-              <option value="">Select style</option>
-              <option>Casual</option>
-              <option>Formal</option>
-              <option>Streetwear</option>
-              <option>Minimal</option>
-              <option>Ethnic</option>
-              <option>Trendy</option>
-            </select>
-          </label>
+          <div class="quiz-panel">
+            <p id="quiz-question-number" class="quiz-question-number">01</p>
+            <h2 id="quiz-question-text" class="quiz-question-text"></h2>
+            <p id="quiz-helper-text" class="quiz-helper-text hidden"></p>
+            <div id="quiz-options" class="quiz-options" role="list"></div>
+          </div>
 
-          <label>
-            <span>8. Occasion</span>
-            <select name="occasion" required>
-              <option value="">Select occasion</option>
-              <option>Daily wear</option>
-              <option>College</option>
-              <option>Office</option>
-              <option>Party</option>
-              <option>Wedding</option>
-            </select>
-          </label>
-
-          <button type="submit" class="submit-btn">Generate My GlowIQ Style Plan</button>
+          <div class="quiz-actions">
+            <button type="button" id="prev-btn" class="quiz-nav-btn quiz-nav-secondary">Previous</button>
+            <button type="button" id="next-btn" class="quiz-nav-btn">Next</button>
+            <button type="submit" id="submit-btn" class="submit-btn hidden">Generate My GlowIQ Style Plan</button>
+          </div>
         </form>
       </section>
 
