@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/haircare.css';
 
-type RoutineTab = 'daily' | 'weekly' | 'questions';
+type HairCareTab = 'daily' | 'weekly' | 'questions';
 
 interface RoutineData {
   hairType: string;
@@ -30,20 +29,12 @@ const ROUTINE_STEPS: Record<string, string> = {
   'Heat protectant spray': 'Shields hair from heat damage.',
 };
 
-const HAIR_TYPE_TIPS: Record<string, string> = {
-  'Straight': 'Your straight hair benefits from moisture balance and regular conditioning. Avoid over-washing to maintain natural shine.',
-  'Wavy': 'Wavy hair thrives with hydration and definition. Use leave-in conditioner and avoid frizz-inducing products.',
-  'Curly': 'Curly hair needs moisture and definition. Deep conditioning and curl-enhancing products are your friends.',
-  'Coily': 'Coily hair requires rich moisture, gentle handling, and regular deep conditioning. Avoid heat styling when possible.',
-  'Not sure': 'Start with a gentle routine and adjust based on how your hair responds.',
-};
-
 const DOS_AND_DONTS = {
   do: [
     'Massage scalp gently with fingertips',
     'Use lukewarm water for washing',
     'Be consistent with your routine',
-    'Get regular trims (every 6-8 weeks)',
+    'Get regular trims every 6-8 weeks',
     'Sleep on a silk/satin pillowcase',
   ],
   dont: [
@@ -56,96 +47,137 @@ const DOS_AND_DONTS = {
 };
 
 const LIFESTYLE_TIPS: Record<string, string[]> = {
-  'Active / outdoor': [
-    'Rinse hair after sweating to prevent buildup.',
+  'Active/Sports': [
+    'Rinse hair immediately after sweating.',
     'Use UV-protective products if in sun daily.',
     'Increase protein intake for hair strength.',
     'Keep hair protected during workouts.',
   ],
-  'Balanced': [
-    'Maintain consistent wash schedule.',
-    'Deep condition 1-2x weekly.',
-    'Stay hydrated with 8+ glasses of water daily.',
-    'Get 7-8 hours of sleep for hair health.',
+  'Stressed': [
+    'Manage stress with meditation or yoga.',
+    'Get adequate sleep for hair recovery.',
+    'Use calming scalp treatments.',
+    'Avoid tight hairstyles that cause tension.',
   ],
-  'Mostly indoors': [
-    'Protect from indoor heat and AC drying.',
-    'Ensure good air quality for scalp health.',
-    'Enjoy longer grooming rituals as self-care.',
-    'Use humidifier to combat dry air.',
+  'Busy': [
+    'Use dry shampoo between washes.',
+    'Try protective styles like braids.',
+    'Keep styling simple and quick.',
+    'Use multi-purpose hair products.',
+  ],
+  'Relaxed': [
+    'Dedicate time to deep conditioning.',
+    'Try intensive hair treatments.',
+    'Experiment with new styles and techniques.',
+    'Give yourself relaxing scalp massages.',
   ],
 };
 
-const HAIR_CARE_QUESTIONS = [
+const HAIR_CARE_QA = [
   {
-    question: 'How often should I wash my hair?',
-    answer: 'It depends on your hair type and lifestyle. Oily hair may need washing every 1-2 days, while dry or curly hair can go 3-4 days or longer. Listen to your hair and scalp - if it feels greasy or itchy, it\'s time to wash.',
+    q: 'How often should I wash my hair?',
+    a: 'It depends on your hair type and lifestyle. Oily hair: every 1-2 days. Normal hair: 2-3 times weekly. Dry/Curly: 1-2 times weekly. Listen to your scalp - if it feels greasy or itchy, wash it.',
+    icon: '🚿',
   },
   {
-    question: 'What causes hair fall and how can I prevent it?',
-    answer: 'Hair fall can be caused by stress, poor diet, hormonal changes, harsh styling, or genetics. To prevent it: eat protein-rich foods, avoid tight hairstyles, use gentle products, massage your scalp regularly, and manage stress levels.',
+    q: 'What causes hair fall and how to prevent it?',
+    a: 'Causes: stress, poor diet, genetics, harsh styling, hormonal changes. Prevention: eat protein-rich foods, massage scalp daily, reduce stress, use gentle products, avoid tight hairstyles, take hair vitamins.',
+    icon: '💪',
   },
   {
-    question: 'Should I use conditioner on my scalp?',
-    answer: 'Generally, no. Conditioner is meant for the mid-lengths to ends of your hair. Applying it to the scalp can make roots greasy and weigh hair down. Focus shampoo on the scalp and conditioner on the lengths.',
+    q: 'Should I condition my scalp or just the ends?',
+    a: 'Only condition the mid-lengths to ends! Applying conditioner to the scalp makes roots greasy and weighs hair down. Focus shampoo on scalp and conditioner on the lengths and ends.',
+    icon: '🧴',
   },
   {
-    question: 'How can I reduce frizz in my hair?',
-    answer: 'Use a moisturizing shampoo and conditioner, apply a leave-in treatment or serum, avoid towel-drying roughly (use a microfiber towel or t-shirt), minimize heat styling, and sleep on a silk or satin pillowcase.',
+    q: 'How to reduce frizz naturally?',
+    a: 'Use moisturizing products, apply leave-in conditioner, avoid towel-drying roughly (use microfiber cloth), minimize heat styling, use serum or oil on ends, sleep on silk pillowcase, deep condition weekly.',
+    icon: '✨',
   },
   {
-    question: 'Is it bad to use heat styling tools every day?',
-    answer: 'Yes, daily heat styling can damage hair over time, causing dryness, breakage, and split ends. Always use a heat protectant spray, keep tools on lower settings, and try to limit heat styling to 2-3 times per week.',
+    q: 'Is daily heat styling bad for hair?',
+    a: 'Yes, daily heat damages hair over time - causes dryness, breakage, split ends. Always use heat protectant spray, keep tools on low-medium heat, limit to 2-3 times weekly, deep condition more often.',
+    icon: '🔥',
   },
   {
-    question: 'What\'s the difference between a hair mask and conditioner?',
-    answer: 'Conditioner is used after every wash for basic moisture and detangling. A hair mask is a deeper treatment used weekly or bi-weekly to repair damage, add intense hydration, and strengthen hair. Masks are left on longer (5-20 minutes).',
+    q: 'Hair mask vs conditioner - what\'s the difference?',
+    a: 'Conditioner: lightweight, used every wash for basic moisture. Hair mask: intensive treatment, used 1-2 times weekly, left on 5-20 minutes for deep hydration and repair. Great combo: condition daily + mask weekly.',
+    icon: '💆',
   },
   {
-    question: 'How do I know my hair type?',
-    answer: 'Hair types range from straight (Type 1) to wavy (Type 2), curly (Type 3), and coily (Type 4). Observe your natural hair texture when air-dried without products. Each type has subcategories (A, B, C) based on curl tightness.',
+    q: 'What are the different hair types?',
+    a: 'Type 1: Straight. Type 2: Wavy (2A-2C). Type 3: Curly (3A-3C). Type 4: Coily/Kinky (4A-4C). Check your natural texture when air-dried. Mix types possible on same head!',
+    icon: '💇',
   },
   {
-    question: 'Can I repair split ends without cutting them?',
-    answer: 'Unfortunately, no. Once hair splits, the only permanent solution is to trim them off. However, you can prevent future split ends by using nourishing products, minimizing heat, and getting regular trims every 6-8 weeks.',
+    q: 'Can split ends be repaired?',
+    a: 'No, split ends can only be cut off. Once hair splits, trimming is the only solution. Prevention is key: use nourishing products, minimize heat, get regular trims every 6-8 weeks, use serums on ends.',
+    icon: '✂️',
   },
   {
-    question: 'Why is my scalp so itchy?',
-    answer: 'Itchy scalp can result from dryness, product buildup, dandruff, or sensitivity to ingredients. Try a gentle clarifying shampoo, avoid harsh sulfates, rinse thoroughly, and consider a scalp treatment or anti-dandruff shampoo if needed.',
+    q: 'Why is my scalp so itchy?',
+    a: 'Causes: dryness, product buildup, dandruff, fungal infection, allergies, harsh shampoos. Solution: try gentle clarifying shampoo, avoid sulfates, rinse thoroughly, use scalp scrub, try tea tree oil or anti-dandruff shampoo.',
+    icon: '🧐',
   },
   {
-    question: 'Does trimming hair make it grow faster?',
-    answer: 'No, trimming doesn\'t affect growth rate (hair grows from the roots). However, regular trims prevent split ends from traveling up the hair shaft, which helps retain length and keeps hair looking healthy.',
+    q: 'Does trimming make hair grow faster?',
+    a: 'No, trimming doesn\'t affect growth rate (hair grows ~6 inches/year from roots). But regular trims prevent split ends from traveling up the shaft, helping you retain length and stay healthy.',
+    icon: '📈',
   },
   {
-    question: 'What ingredients should I avoid in hair products?',
-    answer: 'Common irritants include sulfates (harsh cleansers), parabens (preservatives), silicones (can cause buildup), and alcohol (drying). Look for gentle, sulfate-free formulas, especially if you have sensitive scalp or dry hair.',
+    q: 'Which ingredients should I avoid?',
+    a: 'Avoid: Sulfates (strip natural oils), parabens (preservatives), silicones (buildup), alcohol (drying), excessive fragrance. Look for: sulfate-free, paraben-free, silicone-free, natural ingredients, gentle formulations.',
+    icon: '🚫',
   },
   {
-    question: 'How can I make my hair grow faster?',
-    answer: 'Hair grows about half an inch per month on average. To support healthy growth: eat a balanced diet rich in protein and vitamins, massage your scalp to boost circulation, stay hydrated, reduce stress, and avoid excessive heat or chemical treatments.',
+    q: 'How to make hair grow faster and stronger?',
+    a: 'Hair grows ~0.5 inches/month naturally. Boost growth: eat protein, iron, biotin, vitamins A/C/D/E, stay hydrated, massage scalp 5-10 mins daily, reduce stress, get 7-8 hours sleep, avoid tight hairstyles.',
+    icon: '🌱',
   },
   {
-    question: 'Is it okay to sleep with wet hair?',
-    answer: 'It\'s not ideal. Wet hair is more fragile and prone to breakage. Sleeping on wet hair can also cause frizz and tangles. If you must, use a microfiber towel or t-shirt to remove excess water and braid or loosely tie your hair.',
+    q: 'Is sleeping with wet hair okay?',
+    a: 'No. Wet hair is fragile and breaks easily. Can cause frizz, tangles, split ends. If you must: use microfiber towel/t-shirt to remove water, loosely braid or tie hair, sleep on silk pillowcase.',
+    icon: '😴',
   },
   {
-    question: 'What\'s the best way to detangle hair?',
-    answer: 'Start from the ends and work your way up to the roots using a wide-tooth comb or detangling brush. Detangle when hair is damp (not soaking wet) with conditioner or a detangling spray. Be gentle to avoid breakage.',
+    q: 'What\'s the best way to detangle?',
+    a: 'Always start from the ends, work up to roots with wide-tooth comb or brush. Best when: hair is damp (not soaking), with conditioner or detangling spray on it. Be gentle and patient - rough detangling causes breakage.',
+    icon: '🪮',
   },
   {
-    question: 'Can diet really affect my hair health?',
-    answer: 'Absolutely! Hair is made of protein (keratin), so a diet rich in protein, iron, omega-3 fatty acids, vitamins A, C, D, E, and biotin supports strong, healthy hair. Deficiencies can lead to thinning, dullness, and slow growth.',
+    q: 'How does diet affect hair health?',
+    a: 'Hair is made of protein (keratin). Diet impacts hair: Protein builds hair structure, Iron carries oxygen to follicles, Omega-3s reduce inflammation, Biotin strengthens hair, Vitamins A/C/D/E nourish. Bad diet = weak, thin, dull hair.',
+    icon: '🥗',
+  },
+  {
+    q: 'How often should I get a haircut?',
+    a: 'Every 6-8 weeks for healthy maintenance. Frequency depends on: hair type, style, damage level. Short hair: 4-6 weeks. Long hair: 8-12 weeks. More often if bleached/colored/damaged. Keep ends healthy = stronger hair overall.',
+    icon: '✂️',
+  },
+  {
+    q: 'What\'s the best shampoo type for my hair?',
+    a: 'Oily hair: clarifying or volumizing shampoo. Dry hair: moisturizing or hydrating. Curly hair: curl-defining or sulfate-free. Color-treated: color-safe. Sensitive scalp: gentle or sulfate-free. Take a product test: use for 2 weeks before deciding.',
+    icon: '🧼',
+  },
+  {
+    q: 'How to restore damaged hair?',
+    a: 'Deep condition 1-2x weekly, use protein treatments, apply hair masks, trim damaged ends, reduce heat styling, use heat protectant, get regular haircuts, use nourishing serums, minimize chemical treatments, massage scalp daily.',
+    icon: '💪',
   },
 ];
+
 
 const HairCare: React.FC = () => {
   const navigate = useNavigate();
   const [routine, setRoutine] = useState<RoutineData | null>(null);
-  const [activeTab, setActiveTab] = useState<RoutineTab>('daily');
+  const [activeTab, setActiveTab] = useState<HairCareTab>('daily');
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate('/onboarding/hair');
+    }, 3000);
+
     const data = localStorage.getItem('userData');
     if (data) {
       try {
@@ -160,210 +192,269 @@ const HairCare: React.FC = () => {
             init[`w-${s}`] = false;
           });
           setChecklist(init);
+          clearTimeout(timeout);
+        } else {
+          navigate('/onboarding/hair');
         }
       } catch (e) {
         console.error('Failed to load hair routine');
+        navigate('/onboarding/hair');
       }
+    } else {
+      navigate('/onboarding/hair');
     }
-  }, []);
+
+    return () => clearTimeout(timeout);
+  }, [navigate]);
 
   const toggleCheck = (id: string) => {
     setChecklist(c => ({ ...c, [id]: !c[id] }));
   };
 
-  const getSteps = (): string[] => {
-    return activeTab === 'daily' ? routine?.routine || [] : routine?.weekly || [];
-  };
-
   if (!routine) {
     return (
-      <div className="haircare-loading">
-        <p>Loading your personalized hair care routine...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%)' }}>
+        <div style={{ textAlign: 'center', background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 8px 24px rgba(31,21,19,0.12)' }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>💇</div>
+          <p style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#1F1513' }}>Loading your hair routine…</p>
+          <p style={{ fontSize: '14px', color: '#8B7355' }}>Personalized for your hair type</p>
+        </div>
       </div>
     );
   }
 
-  const steps = getSteps();
-  const completedCount = steps.filter(s => checklist[`${activeTab === 'daily' ? 'd' : 'w'}-${s}`]).length;
-  const completionPercent = steps.length > 0 ? Math.round((completedCount / steps.length) * 100) : 0;
+  const dailyRoutine = routine.routine || [];
+  const weeklyRoutine = routine.weekly || [];
+  const currentRoutine = activeTab === 'daily' ? dailyRoutine : weeklyRoutine;
+  const completedCount = currentRoutine.filter(s => checklist[`${activeTab === 'daily' ? 'd' : 'w'}-${s}`]).length;
+  const completionPercent = currentRoutine.length > 0 ? Math.round((completedCount / currentRoutine.length) * 100) : 0;
 
   return (
-    <div className="haircare-root">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-inner">
-          <h1 className="hero-title">Your Hair Care Routine</h1>
-          <p className="hero-sub">Designed specifically for your hair type and needs.</p>
-
-          <div className="hair-summary-card">
-            <div className="summary-grid">
-              <div className="summary-item">
-                <div className="summary-label">Hair Type</div>
-                <div className="summary-value">{routine.hairType}</div>
-              </div>
-              <div className="summary-item">
-                <div className="summary-label">Scalp Type</div>
-                <div className="summary-value">{routine.scalpType}</div>
-              </div>
-              <div className="summary-item">
-                <div className="summary-label">Wash Frequency</div>
-                <div className="summary-value">{routine.summary.washFreq}</div>
-              </div>
-            </div>
-
-            {routine.summary.topConcerns.length > 0 && (
-              <div className="concerns-section">
-                <div className="concerns-label">Key Concerns</div>
-                <div className="concerns-tags">
-                  {routine.summary.topConcerns.map(c => (
-                    <span key={c} className="concern-tag">{c}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p className="hair-type-note">{HAIR_TYPE_TIPS[routine.hairType] || 'Follow this routine consistently for best results.'}</p>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%)' }}>
+      {/* Navigation */}
+      <nav style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid #E8DDD2', padding: '16px 24px' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '20px', fontWeight: '700', color: '#1F1513' }}>
+            <span>💇</span>
+            <span>Hair Care</span>
           </div>
+          <button onClick={() => navigate('/onboarding/hair')} style={{ padding: '8px 16px', background: '#A08070', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}>
+            ← Back
+          </button>
         </div>
-      </section>
+      </nav>
 
-      {/* Routine Tabs */}
-      <section className="routine-section">
-        <div className="routine-inner">
-          <div className="tab-container">
-            {(['daily', 'weekly', 'questions'] as RoutineTab[]).map(tab => (
-              <button
-                key={tab}
-                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab === 'daily' && '💇 Daily Routine'}
-                {tab === 'weekly' && '✨ Weekly Care'}
-                {tab === 'questions' && '❓ Hair Care Q&A'}
-              </button>
-            ))}
+      {/* Main Content */}
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px 20px 60px' }}>
+        {/* Hero Section */}
+        <div style={{ background: 'white', borderRadius: '20px', padding: '40px', marginBottom: '32px', boxShadow: '0 4px 16px rgba(160,128,112,0.1)', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '700', color: '#1F1513', marginBottom: '8px' }}>Your Hair Care Routine 💆</h1>
+          <p style={{ fontSize: '15px', color: '#8B7355', marginBottom: '24px' }}>Designed for your {routine.hairType} hair and {routine.scalpType} scalp</p>
+
+          {/* Summary Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ background: '#FAF8F5', padding: '14px', borderRadius: '10px' }}>
+              <p style={{ fontSize: '11px', fontWeight: '700', color: '#A08070', margin: '0 0 4px 0', textTransform: 'uppercase' }}>Hair Type</p>
+              <p style={{ fontSize: '16px', fontWeight: '700', color: '#1F1513', margin: 0 }}>{routine.hairType}</p>
+            </div>
+            <div style={{ background: '#FAF8F5', padding: '14px', borderRadius: '10px' }}>
+              <p style={{ fontSize: '11px', fontWeight: '700', color: '#A08070', margin: '0 0 4px 0', textTransform: 'uppercase' }}>Scalp Type</p>
+              <p style={{ fontSize: '16px', fontWeight: '700', color: '#1F1513', margin: 0 }}>{routine.scalpType}</p>
+            </div>
+            <div style={{ background: '#FAF8F5', padding: '14px', borderRadius: '10px' }}>
+              <p style={{ fontSize: '11px', fontWeight: '700', color: '#A08070', margin: '0 0 4px 0', textTransform: 'uppercase' }}>Frequency</p>
+              <p style={{ fontSize: '16px', fontWeight: '700', color: '#1F1513', margin: 0 }}>{routine.summary.washFreq}</p>
+            </div>
           </div>
 
-          {/* Progress Bar */}
-          {activeTab !== 'questions' && (
-            <div className="progress-section">
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: `${completionPercent}%` }} />
+          {/* Top Concerns */}
+          {routine.summary.topConcerns.length > 0 && (
+            <div>
+              <p style={{ fontSize: '11px', fontWeight: '700', color: '#A08070', margin: '0 0 8px 0', textTransform: 'uppercase' }}>Top Concerns</p>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {routine.summary.topConcerns.map(concern => (
+                  <span key={concern} style={{ background: '#E8DDD2', color: '#1F1513', padding: '6px 12px', borderRadius: '16px', fontSize: '12px', fontWeight: '600' }}>
+                    {concern}
+                  </span>
+                ))}
               </div>
-              <span className="progress-text">{completionPercent}% Complete</span>
             </div>
           )}
+        </div>
 
-          {/* Steps List */}
-          {activeTab !== 'questions' && (
-            <div className="steps-list">
-              {steps.map((step, idx) => {
-                const tabPrefix = activeTab === 'daily' ? 'd' : 'w';
-                const stepId = `${tabPrefix}-${step}`;
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: '16px', borderBottom: '2px solid #E8DDD2', marginBottom: '32px' }}>
+          <button
+            onClick={() => setActiveTab('daily')}
+            style={{
+              padding: '12px 20px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'daily' ? '3px solid #A08070' : 'none',
+              marginBottom: '-2px',
+              color: activeTab === 'daily' ? '#A08070' : '#8B7355',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
+          >
+            🌞 Daily
+          </button>
+          <button
+            onClick={() => setActiveTab('weekly')}
+            style={{
+              padding: '12px 20px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'weekly' ? '3px solid #A08070' : 'none',
+              marginBottom: '-2px',
+              color: activeTab === 'weekly' ? '#A08070' : '#8B7355',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
+          >
+            ✨ Weekly
+          </button>
+          <button
+            onClick={() => setActiveTab('questions')}
+            style={{
+              padding: '12px 20px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'questions' ? '3px solid #A08070' : 'none',
+              marginBottom: '-2px',
+              color: activeTab === 'questions' ? '#A08070' : '#8B7355',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
+          >
+            ❓ Q&A
+          </button>
+        </div>
+
+        {/* Routine Tabs */}
+        {(activeTab === 'daily' || activeTab === 'weekly') && (
+          <div>
+            {/* Progress */}
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <p style={{ fontSize: '11px', fontWeight: '700', color: '#A08070', margin: 0, textTransform: 'uppercase' }}>Progress</p>
+                <p style={{ fontSize: '13px', fontWeight: '700', color: '#A08070', margin: 0 }}>{completionPercent}%</p>
+              </div>
+              <div style={{ height: '8px', background: '#E8DDD2', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ height: '100%', background: '#A08070', width: `${completionPercent}%`, transition: 'width 0.3s' }} />
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div style={{ display: 'grid', gap: '10px' }}>
+              {currentRoutine.map((step, idx) => {
+                const stepId = `${activeTab === 'daily' ? 'd' : 'w'}-${step}`;
                 const isChecked = checklist[stepId] || false;
                 const desc = ROUTINE_STEPS[step] || '';
 
                 return (
-                  <div key={stepId} className={`step-item ${isChecked ? 'completed' : ''}`}>
+                  <div
+                    key={stepId}
+                    style={{
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      display: 'grid',
+                      gridTemplateColumns: '20px 1fr',
+                      gap: '12px',
+                      alignItems: 'start',
+                      border: '1px solid #E8DDD2',
+                      opacity: isChecked ? 0.5 : 1,
+                      textDecoration: isChecked ? 'line-through' : 'none',
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => toggleCheck(stepId)}
-                      className="step-checkbox"
-                      id={stepId}
+                      style={{
+                        width: '18px',
+                        height: '18px',
+                        borderRadius: '4px',
+                        border: '2px solid #A08070',
+                        cursor: 'pointer',
+                        accentColor: '#A08070',
+                        marginTop: '2px',
+                      }}
                     />
-                    <label htmlFor={stepId} className="step-label">
-                      <div className="step-nameandnum">
-                        <span className="step-num">{idx + 1}</span>
-                        <span className="step-name">{step}</span>
+                    <div>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                        <span style={{ background: '#A08070', color: 'white', width: '20px', height: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '700' }}>
+                          {idx + 1}
+                        </span>
+                        <span style={{ fontSize: '13px', fontWeight: '600', color: '#1F1513' }}>{step}</span>
                       </div>
-                      {desc && <p className="step-desc">{desc}</p>}
-                    </label>
-                    {isChecked && <span className="check-mark">✓</span>}
+                      {desc && <p style={{ fontSize: '12px', color: '#8B7355', margin: '4px 0 0 0' }}>{desc}</p>}
+                    </div>
                   </div>
                 );
               })}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Questions & Answers */}
-          {activeTab === 'questions' && (
-            <div className="questions-list">
-              {HAIR_CARE_QUESTIONS.map((qa, idx) => (
-                <div key={idx} className="question-card">
-                  <h3 className="question-title">
-                    <span className="question-icon">Q{idx + 1}</span>
-                    {qa.question}
-                  </h3>
-                  <p className="question-answer">{qa.answer}</p>
+        {/* Q&A Section */}
+        {activeTab === 'questions' && (
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {HAIR_CARE_QA.map((qa, idx) => (
+              <div key={idx} style={{ background: 'white', borderRadius: '12px', padding: '18px', border: '1px solid #E8DDD2' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '22px' }}>{qa.icon}</span>
+                  <h3 style={{ fontSize: '13px', fontWeight: '700', color: '#1F1513', margin: 0, lineHeight: '1.4' }}>Q{idx + 1}: {qa.q}</h3>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+                <p style={{ fontSize: '12px', color: '#8B7355', lineHeight: '1.5', margin: '0 0 0 32px' }}>{qa.a}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
-      {/* Do's & Don'ts */}
-      <section className="dos-donts-section">
-        <div className="dos-donts-inner">
-          <h2 className="section-title">Do's & Don'ts</h2>
-
-          <div className="dos-donts-grid">
-            <div className="dos-column">
-              <h3 className="column-title">✓ Do</h3>
-              <ul className="dos-list">
+        {/* Do's & Don'ts */}
+        <div style={{ marginTop: '48px', background: 'white', borderRadius: '16px', padding: '28px', border: '1px solid #E8DDD2' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#1F1513', marginBottom: '20px' }}>Do's & Don'ts 👍</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#27AE60', marginBottom: '12px' }}>✓ Do</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '8px' }}>
                 {DOS_AND_DONTS.do.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <li key={i} style={{ fontSize: '12px', color: '#8B7355' }}>• {item}</li>
                 ))}
               </ul>
             </div>
-
-            <div className="donts-column">
-              <h3 className="column-title">✗ Don't</h3>
-              <ul className="donts-list">
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#E74C3C', marginBottom: '12px' }}>✗ Don't</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '8px' }}>
                 {DOS_AND_DONTS.dont.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <li key={i} style={{ fontSize: '12px', color: '#8B7355' }}>• {item}</li>
                 ))}
               </ul>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Lifestyle Tips */}
-      <section className="tips-section">
-        <div className="tips-inner">
-          <h2 className="section-title">Lifestyle Tips</h2>
-          <p className="section-sub">Healthy hair grows from healthy habits.</p>
-
-          <div className="tips-grid">
-            {LIFESTYLE_TIPS[routine.summary.lifestyle] ? (
-              LIFESTYLE_TIPS[routine.summary.lifestyle].map((tip, i) => (
-                <div key={i} className="tip-card">
-                  <span className="tip-icon">💡</span>
-                  <p>{tip}</p>
-                </div>
-              ))
-            ) : (
-              <p className="no-tips">Maintain consistency with your routine for best results.</p>
-            )}
+        {/* Lifestyle Tips */}
+        <div style={{ marginTop: '32px', background: 'white', borderRadius: '16px', padding: '28px', border: '1px solid #E8DDD2', marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#1F1513', marginBottom: '6px' }}>Lifestyle Tips 💡</h2>
+          <p style={{ fontSize: '13px', color: '#8B7355', marginBottom: '16px', margin: '0 0 16px 0' }}>Healthy hair grows from healthy habits</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+            {LIFESTYLE_TIPS[routine.summary.lifestyle]?.map((tip, i) => (
+              <div key={i} style={{ background: '#FAF8F5', padding: '12px', borderRadius: '10px', border: '1px solid #E8DDD2' }}>
+                <p style={{ fontSize: '12px', color: '#8B7355', lineHeight: '1.4', margin: 0 }}>{tip}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <section className="footer-section">
-        <div className="footer-inner">
-          <p className="footer-message">Healthy hair is built with consistency, not perfection.</p>
-
-          <div className="footer-ctas">
-            <button className="btn-secondary" onClick={() => navigate('/dashboard')}>← Back to Dashboard</button>
-            <button className="btn-primary" onClick={() => navigate('/onboarding/hair')}>Edit My Profile</button>
-          </div>
-
-          <p className="disclaimer">{routine.note}</p>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,500 @@
+/* Fashion Onboarding - Modern Design (matching Hair Care) */
+:root {
+  --primary: #A08070;
+  --primary-light: #C8A882;
+  --primary-dark: #8B6F5F;
+  --secondary: #D4B5A0;
+  --bg-light: #FAF8F5;
+  --bg-white: #FFFFFF;
+  --text-dark: #1F1513;
+  --text-muted: #8B7355;
+  --border-color: #E8DDD2;
+  --shadow-sm: 0 2px 8px rgba(31, 21, 19, 0.08);
+  --shadow-md: 0 8px 24px rgba(31, 21, 19, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== LANDING PAGE ===== */
+.fashion-landing {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+}
+
+.fashion-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.fashion-nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fashion-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.fashion-nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.fashion-nav-link {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 8px 0;
+}
+
+.fashion-nav-link:hover,
+.fashion-nav-link.active {
+  color: var(--primary);
+}
+
+.fashion-hero-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.fashion-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fashion-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(200, 168, 130, 0.1);
+  border: 1px solid rgba(200, 168, 130, 0.2);
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.fashion-hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-dark);
+}
+
+.fashion-hero-title .highlight {
+  color: var(--primary);
+}
+
+.fashion-hero-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 520px;
+}
+
+.fashion-cta-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.fashion-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.fashion-btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(160, 128, 112, 0.3);
+}
+
+.fashion-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 32px;
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fashion-btn-secondary:hover {
+  border-color: var(--primary);
+  background: rgba(200, 168, 130, 0.05);
+}
+
+.fashion-hero-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fashion-image-placeholder {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(212, 181, 160, 0.2) 0%, rgba(200, 168, 130, 0.1) 100%);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fashion-image-placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== QUIZ PAGE ===== */
+.fashion-quiz-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.fashion-quiz-header {
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.fashion-back-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.fashion-back-btn:hover {
+  background: var(--bg-light);
+  border-color: var(--primary);
+}
+
+.fashion-progress-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fashion-question-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fashion-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fashion-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  transition: width 0.4s ease;
+}
+
+.fashion-quiz-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.fashion-quiz-card {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 20px;
+  padding: 48px 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.fashion-question-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.fashion-question-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.fashion-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.fashion-question-group {
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.fashion-question-group:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.fashion-field-label {
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: block;
+  letter-spacing: -0.3px;
+}
+
+.fashion-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fashion-pill {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
+  background: white;
+  color: var(--text-dark);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.fashion-pill:hover {
+  border-color: var(--primary);
+  background: rgba(200, 168, 130, 0.05);
+  transform: translateY(-2px);
+}
+
+.fashion-pill-selected {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 6px 16px rgba(160, 128, 112, 0.25);
+}
+
+.fashion-button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.fashion-button-group .fashion-btn-secondary {
+  flex: 1;
+}
+
+.fashion-button-group .fashion-btn-primary {
+  flex: 1;
+}
+
+/* ===== RESULT PAGE ===== */
+.fashion-result-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+  padding: 40px 24px;
+}
+
+.fashion-result-header {
+  max-width: 800px;
+  margin: 0 auto 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.fashion-result-back {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.fashion-result-back:hover {
+  background: var(--bg-light);
+  border-color: var(--primary);
+}
+
+.fashion-result-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.fashion-result-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .fashion-hero-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+
+  .fashion-hero-title {
+    font-size: 36px;
+  }
+
+  .fashion-nav-links {
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  .fashion-quiz-card {
+    padding: 32px 20px;
+  }
+
+  .fashion-question-title {
+    font-size: 24px;
+  }
+
+  .fashion-pills {
+    gap: 8px;
+  }
+
+  .fashion-pill {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .fashion-cta-buttons {
+    flex-direction: column;
+  }
+
+  .fashion-btn-primary,
+  .fashion-btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .fashion-hero-title {
+    font-size: 28px;
+  }
+
+  .fashion-hero-description {
+    font-size: 14px;
+  }
+
+  .fashion-nav-container {
+    padding: 12px 16px;
+  }
+
+  .fashion-nav-logo {
+    font-size: 18px;
+  }
+
+  .fashion-nav-links {
+    display: none;
+  }
+
+  .fashion-quiz-card {
+    padding: 24px 16px;
+    max-width: 100%;
+  }
+
+  .fashion-question-title {
+    font-size: 20px;
+  }
+
+  .fashion-button-group {
+    flex-direction: column;
+  }
+}

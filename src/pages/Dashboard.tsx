@@ -60,14 +60,10 @@ const Dashboard = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
     localStorage.removeItem('userData');
     localStorage.removeItem('token');
     navigate('/login');
-  };
-
-  const handleCategoryClick = (category: Category) => {
-    setActiveCategory(category);
   };
 
   const toggleRoutineStep = (id: number) => {
@@ -116,11 +112,18 @@ const Dashboard = () => {
           <div className="profile-menu-container">
             <button 
               className="nav-profile"
-              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              onClick={() => navigate('/profile')}
             >
               <div className="profile-avatar">{userName.charAt(0).toUpperCase()}</div>
               <span className="profile-text">{userName}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="dropdown-icon">
+            </button>
+            
+            <button 
+              className="profile-menu-btn"
+              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              aria-label="Profile menu"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="dropdown-icon">
                 <path d="M7 10l5 5 5-5z" fill="currentColor" />
               </svg>
             </button>
@@ -130,6 +133,18 @@ const Dashboard = () => {
                 <div className="dropdown-header">
                   <p className="dropdown-email">{userData.email}</p>
                 </div>
+                <button 
+                  className="dropdown-item profile-link"
+                  onClick={() => {
+                    setProfileMenuOpen(false);
+                    navigate('/profile');
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor" />
+                  </svg>
+                  <span>View Profile</span>
+                </button>
                 <button 
                   className="dropdown-item logout-item"
                   onClick={() => {
@@ -181,7 +196,7 @@ const Dashboard = () => {
               {/* Hair Care Card */}
               <div 
                 className="category-card haircare-card"
-                onClick={() => navigate('/haircare')}
+                onClick={() => navigate('/onboarding/hair')}
               >
                 <div className="card-icon">
                   <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
@@ -198,7 +213,7 @@ const Dashboard = () => {
               {/* Fashion Care Card */}
               <div 
                 className="category-card fashion-card"
-                onClick={() => handleCategoryClick('fashion')}
+                onClick={() => navigate('/onboarding/fashion')}
               >
                 <div className="card-icon">
                   <svg width="48" height="48" viewBox="0 0 64 64" fill="none">

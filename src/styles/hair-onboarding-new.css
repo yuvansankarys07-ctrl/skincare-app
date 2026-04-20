@@ -1,0 +1,585 @@
+/* Hair Onboarding - Modern Design */
+:root {
+  --primary: #A08070;
+  --primary-light: #C8A882;
+  --primary-dark: #8B6F5F;
+  --secondary: #D4B5A0;
+  --bg-light: #FAF8F5;
+  --bg-white: #FFFFFF;
+  --text-dark: #1F1513;
+  --text-muted: #8B7355;
+  --border-color: #E8DDD2;
+  --shadow-sm: 0 2px 8px rgba(31, 21, 19, 0.08);
+  --shadow-md: 0 8px 24px rgba(31, 21, 19, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== LANDING PAGE ===== */
+.hair-landing {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+}
+
+.hair-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hair-nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hair-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.hair-nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.hair-nav-link {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 8px 0;
+}
+
+.hair-nav-link:hover,
+.hair-nav-link.active {
+  color: var(--primary);
+}
+
+.hair-hero-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hair-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hair-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(200, 168, 130, 0.1);
+  border: 1px solid rgba(200, 168, 130, 0.2);
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.hair-hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-dark);
+}
+
+.hair-hero-title .highlight {
+  color: var(--primary);
+}
+
+.hair-hero-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 520px;
+}
+
+.hair-cta-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.hair-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.hair-btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(160, 128, 112, 0.3);
+}
+
+.hair-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 32px;
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hair-btn-secondary:hover {
+  border-color: var(--primary);
+  background: rgba(200, 168, 130, 0.05);
+}
+
+.hair-hero-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hair-image-placeholder {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(212, 181, 160, 0.2) 0%, rgba(200, 168, 130, 0.1) 100%);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hair-image-placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== QUIZ PAGE ===== */
+.hair-quiz-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.hair-quiz-header {
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hair-back-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.hair-back-btn:hover {
+  background: var(--bg-light);
+  border-color: var(--primary);
+}
+
+.hair-progress-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hair-question-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hair-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hair-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  transition: width 0.4s ease;
+}
+
+.hair-quiz-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.hair-quiz-card {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 20px;
+  padding: 48px 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.hair-question-emoji {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.hair-question-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.hair-question-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.hair-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.hair-option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  background: var(--bg-light);
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-align: center;
+}
+
+.hair-option-card:hover {
+  background: rgba(200, 168, 130, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+}
+
+.hair-option-card.active {
+  background: rgba(200, 168, 130, 0.15);
+  border-color: var(--primary);
+}
+
+.hair-option-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hair-option-icon {
+  font-size: 32px;
+}
+
+.hair-option-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+
+.hair-quiz-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.hair-quiz-tip {
+  color: var(--text-muted);
+}
+
+.hair-progress-percent {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* ===== RESULT PAGE ===== */
+.hair-result-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE8 100%);
+  padding: 24px;
+}
+
+.hair-result-header {
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hair-result-back {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.hair-result-back:hover {
+  background: var(--bg-light);
+  border-color: var(--primary);
+}
+
+.hair-result-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: var(--shadow-md);
+}
+
+.hair-result-hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.hair-type-emoji {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.hair-type-name {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.hair-type-description {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.hair-result-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.hair-result-section {
+  padding: 24px;
+  background: var(--bg-light);
+  border-radius: 14px;
+}
+
+.hair-result-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hair-result-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hair-result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hair-result-item-icon {
+  font-size: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.hair-result-item-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.hair-result-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-color);
+}
+
+.hair-result-cta button {
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-retake {
+  background: var(--primary);
+  color: white;
+}
+
+.cta-retake:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.cta-save {
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--border-color);
+}
+
+.cta-save:hover {
+  border-color: var(--primary);
+  background: rgba(200, 168, 130, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hair-hero-container {
+    grid-template-columns: 1fr;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+
+  .hair-hero-title {
+    font-size: 36px;
+  }
+
+  .hair-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hair-result-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .hair-quiz-card {
+    padding: 32px 20px;
+  }
+
+  .hair-cta-buttons {
+    flex-direction: column;
+  }
+
+  .hair-nav-links {
+    gap: 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hair-hero-title {
+    font-size: 28px;
+  }
+
+  .hair-nav-container {
+    padding: 12px 16px;
+  }
+
+  .hair-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hair-quiz-card {
+    padding: 24px 16px;
+  }
+
+  .hair-hero-container {
+    padding: 30px 16px;
+  }
+
+  .hair-result-content {
+    padding: 24px 16px;
+  }
+}

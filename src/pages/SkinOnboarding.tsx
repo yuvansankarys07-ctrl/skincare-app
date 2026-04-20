@@ -176,12 +176,41 @@ const SkinOnboarding: React.FC = () => {
     }
   };
 
-  const finishAndSave = () => {
+  const finishAndSave = async () => {
     try {
       const existing = localStorage.getItem('userData');
       const prev = existing ? JSON.parse(existing) : {};
       const payload = { ...prev, skinProfile: { answers, result } };
       localStorage.setItem('userData', JSON.stringify(payload));
+      
+      // Save to backend database
+      const token = localStorage.getItem('token');
+      if (token && result) {
+        try {
+          const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
+          const response = await fetch(`${API_BASE_URL}/api/auth/quiz/skin`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              skinType: result.skinType || '',
+              skinProfile: { answers, result },
+              skinQuiz: answers
+            }),
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Skin quiz saved to database:', data);
+          } else {
+            console.error('Failed to save skin quiz to database');
+          }
+        } catch (apiError) {
+          console.error('API error saving skin quiz:', apiError);
+        }
+      }
     } catch (e) {
       localStorage.setItem('userData', JSON.stringify({ skinProfile: { answers, result } }));
     }
