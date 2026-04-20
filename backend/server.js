@@ -81,7 +81,7 @@ app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(500).json({ message: 'Internal server error' });
 });
-const PORT = process.env.PORT || 5000;
+
 // Start server
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
