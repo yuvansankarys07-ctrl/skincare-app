@@ -4,7 +4,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/login.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
 interface GoogleCredentialResponse {
@@ -88,7 +88,7 @@ const Login = () => {
   };
 
   // Handle Google Login
-  const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
+  const handleGoogleSuccess = async (credentialResponse: any) => {
     try {
       setLoading(true);
       setError('');
